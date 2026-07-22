@@ -6,8 +6,8 @@ from database import engine, get_db
 from auth import oauth2_scheme
 import jwt
 
-# 🔥 Fixed import: We only import storefront and cart from routers
-from routers import storefront, cart
+# 🔥 FIXED: Added the checkout router to your imports
+from routers import storefront, cart, checkout
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -21,9 +21,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 🔥 Registering the Routers (Removed the duplicate cart line!)
+# 🔥 FIXED: Registering the checkout router here so FastAPI knows it exists
 app.include_router(storefront.router)
 app.include_router(cart.router)
+app.include_router(checkout.router)
 
 # --- REGISTRATION ---
 @app.post("/api/register", response_model=schemas.CustomerOut)

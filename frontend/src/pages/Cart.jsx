@@ -114,7 +114,11 @@ export default function Cart() {
                 <span className="text-lg font-bold text-gray-900">Grand Total:</span>
                 <span className="text-2xl font-extrabold text-green-600">₹{grandTotal}</span>
               </div>
-              <button className="w-full bg-green-600 text-white font-bold py-4 rounded-xl hover:bg-green-500 transition flex justify-center items-center gap-2">
+              {/* 🔥 FIXED: Added onClick={...} to navigate to the checkout page */}
+              <button 
+                onClick={() => navigate('/checkout')} 
+                className="w-full bg-green-600 text-white font-bold py-4 rounded-xl hover:bg-green-500 transition flex justify-center items-center gap-2"
+              >
                 Proceed to Checkout <ArrowRight className="w-5 h-5" />
               </button>
               <Link to="/home" className="block text-center mt-4 text-gray-500 hover:text-green-600 font-medium">

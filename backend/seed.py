@@ -74,7 +74,7 @@ def seed_database():
             {
                 "name": "Broiler Chicken", "cat": "Fresh Meat", "price": 220.0, "unit": "Kg", "stock": 80, "featured": False,
                 "desc": "Clean, fresh, and tender broiler chicken. Perfect for everyday curries and roasts.",
-                "img": "https://images.unsplash.com/photo-1587593810167-a84920ea0781?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "img": "https://imgs.search.brave.com/n49mcNtZCK7c48hpn1PqTiQg1X1Hc-tQxgoOYRvqV1k/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTI2/ODI2MDU1NS9waG90/by93aGl0ZS1icm9p/bGVyLWNoaWNrZW4t/YXQtdGhlLXBvdWx0/cnktZmFybS5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9Wm54/amRBMTVBMy1aM2Q2/QmpnS25CNmtGUlM1/ZTZRV3N2NGFJVFlG/WTBucz0",
             },
             {
                 "name": "Goat Meat", "cat": "Fresh Meat", "price": 850.0, "unit": "Kg", "stock": 15, "featured": True,

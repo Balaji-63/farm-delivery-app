@@ -7,9 +7,13 @@ import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import CategoryView from './pages/CategoryView';
 
-// 🔥 NEW: Day 3 Product & Cart Components
+// Day 3 Product & Cart Components
 import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
+
+// 🔥 NEW: Day 4 Checkout & Order Components
+import Checkout from './pages/Checkout';
+import OrderSuccess from './pages/OrderSuccess';
 
 // 1. Keeps logged-out users OUT of the private pages
 const ProtectedRoute = ({ children }) => {
@@ -29,6 +33,7 @@ const PublicRoute = ({ children }) => {
 function App() {
   return (
     <Router>
+      {/* 🔥 RESTORED: Back to the standard full-screen web view! */}
       <div className="w-full min-h-screen bg-gray-50 overflow-hidden relative">
         <Routes>
           {/* Default entry point now redirects to the main storefront */}
@@ -64,17 +69,30 @@ function App() {
             </ProtectedRoute>
           } />
 
-          {/* 🔥 NEW: Product Details Route */}
           <Route path="/product/:id" element={
             <ProtectedRoute>
               <ProductDetails />
             </ProtectedRoute>
           } />
 
-          {/* 🔥 NEW: Shopping Cart Route */}
           <Route path="/cart" element={
             <ProtectedRoute>
               <Cart />
+            </ProtectedRoute>
+          } />
+
+          {/* ==========================================
+              🔥 NEW DAY 4: CHECKOUT ROUTES
+             ========================================== */}
+          <Route path="/checkout" element={
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/order-success/:orderId" element={
+            <ProtectedRoute>
+              <OrderSuccess />
             </ProtectedRoute>
           } />
 

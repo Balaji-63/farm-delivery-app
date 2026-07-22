@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional, Any, List
+from datetime import datetime
 
 class CustomerCreate(BaseModel):
     full_name: str
@@ -56,5 +57,38 @@ class CartOut(BaseModel):
     quantity: int
     product: ProductOut # This will now work perfectly!
 
+    class Config:
+        from_attributes = True
+
+class AddressBase(BaseModel):
+    full_name: str
+    mobile_number: str
+    address: str
+    village: str
+    district: str
+    state: str
+    pincode: str
+    landmark: Optional[str] = None
+    is_default: bool = False
+
+class AddressCreate(AddressBase):
+    pass
+
+class AddressOut(AddressBase):
+    id: int
+    customer_id: int
+    class Config:
+        from_attributes = True
+
+class OrderCreate(BaseModel):
+    address_id: int
+    payment_method: str
+
+class OrderOut(BaseModel):
+    order_id: str
+    total_amount: float
+    payment_method: str
+    order_status: str
+    created_at: datetime
     class Config:
         from_attributes = True

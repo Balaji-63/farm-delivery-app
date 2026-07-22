@@ -55,3 +55,39 @@ class Cart(Base):
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     
     product = relationship("Product")
+
+class CustomerAddress(Base):
+    __tablename__ = "customer_addresses"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    customer_id = Column(Integer, ForeignKey("customers.id")) # 🔥 Confirmed fix: points to customers.id
+    full_name = Column(String(100))
+    mobile_number = Column(String(15))
+    address = Column(String(255)) # Door no / Street
+    village = Column(String(100))
+    district = Column(String(100))
+    state = Column(String(100))
+    pincode = Column(String(20))
+    landmark = Column(String(255), nullable=True)
+    is_default = Column(Boolean, default=False)
+
+class Order(Base):
+    __tablename__ = "orders"
+    
+    order_id = Column(String(50), primary_key=True, index=True)
+    customer_id = Column(Integer, ForeignKey("customers.id")) # 🔥 Confirmed fix: points to customers.id
+    total_amount = Column(Float)
+    payment_method = Column(String(50))
+    order_status = Column(String(50), default="Pending") # Pending, Confirmed, Preparing, Out for Delivery, Delivered, Cancelled
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    
+    items = relationship("OrderItem", backref="order")
+
+class OrderItem(Base):
+    __tablename__ = "order_items"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    order_id = Column(String(50), ForeignKey("orders.order_id"))
+    product_id = Column(Integer, ForeignKey("products.id")) 
+    quantity = Column(Integer)
+    price = Column(Float)

@@ -60,7 +60,7 @@ export default function Home() {
           <input 
             type="text" 
             placeholder="Search for Milk, Chicken, Sea Fish..." 
-            className="w-full pl-5 pr-12 py-4 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-green-400 shadow-lg text-lg"
+            className="w-full bg-white text-gray-900 placeholder-gray-500 px-6 py-4 rounded-full shadow-lg focus:outline-none focus:ring-4 focus:ring-green-300 transition-all"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
