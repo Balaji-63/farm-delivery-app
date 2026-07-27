@@ -5,9 +5,7 @@ import models, schemas, auth
 from database import engine, get_db
 from auth import oauth2_scheme
 import jwt
-
-# 🔥 FIXED: Added the checkout router to your imports
-from routers import storefront, cart, checkout
+from routers import storefront, cart, checkout, orders
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -25,6 +23,7 @@ app.add_middleware(
 app.include_router(storefront.router)
 app.include_router(cart.router)
 app.include_router(checkout.router)
+app.include_router(orders.router)
 
 # --- REGISTRATION ---
 @app.post("/api/register", response_model=schemas.CustomerOut)

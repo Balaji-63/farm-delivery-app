@@ -92,3 +92,33 @@ class OrderOut(BaseModel):
     created_at: datetime
     class Config:
         from_attributes = True
+
+class OrderStatusHistoryOut(BaseModel):
+    status: str
+    updated_at: datetime
+
+    class Config:
+        orm_mode = True
+
+# Update the existing OrderOut schema (if you have one) or add this:
+class OrderItemOut(BaseModel):
+    id: int
+    product_id: int
+    quantity: int
+    price: float
+    # We will fetch product details dynamically in the route
+
+    class Config:
+        orm_mode = True
+
+class OrderOut(BaseModel):
+    order_id: str
+    total_amount: float
+    payment_method: str
+    order_status: str
+    created_at: datetime
+    items: List[OrderItemOut] = []
+    status_history: List[OrderStatusHistoryOut] = []
+
+    class Config:
+        orm_mode = True

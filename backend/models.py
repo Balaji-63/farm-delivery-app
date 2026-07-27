@@ -91,3 +91,14 @@ class OrderItem(Base):
     product_id = Column(Integer, ForeignKey("products.id")) 
     quantity = Column(Integer)
     price = Column(Float)
+
+class OrderStatusHistory(Base):
+    __tablename__ = "order_status_history"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    order_id = Column(String(50), ForeignKey("orders.order_id"))
+    status = Column(String(50)) # Pending, Confirmed, Preparing, Out for Delivery, Delivered, Cancelled
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow)
+    
+    # Relationship back to order
+    order = relationship("Order", backref="status_history")

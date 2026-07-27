@@ -11,9 +11,13 @@ import CategoryView from './pages/CategoryView';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
 
-// 🔥 NEW: Day 4 Checkout & Order Components
+// Day 4 Checkout & Order Components
 import Checkout from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
+
+// 🔥 NEW: Day 5 Order Management Components
+import MyOrders from './pages/MyOrders';
+import OrderDetailsPage from './pages/OrderDetailsPage';
 
 // 1. Keeps logged-out users OUT of the private pages
 const ProtectedRoute = ({ children }) => {
@@ -82,7 +86,7 @@ function App() {
           } />
 
           {/* ==========================================
-              🔥 NEW DAY 4: CHECKOUT ROUTES
+              DAY 4: CHECKOUT ROUTES
              ========================================== */}
           <Route path="/checkout" element={
             <ProtectedRoute>
@@ -93,6 +97,21 @@ function App() {
           <Route path="/order-success/:orderId" element={
             <ProtectedRoute>
               <OrderSuccess />
+            </ProtectedRoute>
+          } />
+
+          {/* ==========================================
+              🔥 NEW DAY 5: ORDER MANAGEMENT ROUTES
+             ========================================== */}
+          <Route path="/my-orders" element={
+            <ProtectedRoute>
+              <MyOrders />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/my-orders/:orderId" element={
+            <ProtectedRoute>
+              <OrderDetailsPage />
             </ProtectedRoute>
           } />
 
