@@ -2,6 +2,9 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional, Any, List
 from datetime import datetime
 
+# ==========================================
+# CUSTOMER SCHEMAS
+# ==========================================
 class CustomerCreate(BaseModel):
     full_name: str
     mobile_number: str
@@ -22,13 +25,41 @@ class CustomerOut(BaseModel):
     full_name: str
     mobile_number: str
     village: str
+    email: Optional[EmailStr] = None
+    status: str
+    created_at: datetime
     
     class Config:
         from_attributes = True
 
-# 🔥 NEW: Added ProductOut so CartOut and your Router can use it
-class ProductOut(BaseModel):
+class CustomerStatusUpdate(BaseModel):
+    status: str
+
+# ==========================================
+# CATEGORY SCHEMAS (NEW FOR ADMIN)
+# ==========================================
+class CategoryBase(BaseModel):
+    category_name: str
+    category_image: Optional[str] = None
+    status: str = "Active"
+
+class CategoryCreate(CategoryBase):
+    pass
+
+class CategoryUpdate(BaseModel):
+    category_name: Optional[str] = None
+    category_image: Optional[str] = None
+    status: Optional[str] = None
+
+class CategoryOut(CategoryBase):
     id: int
+    class Config:
+        from_attributes = True
+
+# ==========================================
+# PRODUCT SCHEMAS
+# ==========================================
+class ProductBase(BaseModel):
     category_id: int
     product_name: str
     description: Optional[str] = None
@@ -37,13 +68,35 @@ class ProductOut(BaseModel):
     price: float
     stock: int
     unit: str
-    is_featured: bool
-    is_popular: bool
-    status: str
+    is_featured: bool = False
+    is_popular: bool = False
+    status: str = "Active"
+
+class ProductCreate(ProductBase):
+    pass
+
+class ProductUpdate(BaseModel):
+    category_id: Optional[int] = None
+    product_name: Optional[str] = None
+    description: Optional[str] = None
+    product_image: Optional[str] = None
+    images: Optional[Any] = None
+    price: Optional[float] = None
+    stock: Optional[int] = None
+    unit: Optional[str] = None
+    is_featured: Optional[bool] = None
+    is_popular: Optional[bool] = None
+    status: Optional[str] = None
+
+class ProductOut(ProductBase):
+    id: int
 
     class Config:
         from_attributes = True
 
+# ==========================================
+# CART SCHEMAS
+# ==========================================
 class CartBase(BaseModel):
     product_id: int
     quantity: int
@@ -55,11 +108,14 @@ class CartOut(BaseModel):
     id: int
     product_id: int
     quantity: int
-    product: ProductOut # This will now work perfectly!
+    product: ProductOut
 
     class Config:
         from_attributes = True
 
+# ==========================================
+# ADDRESS SCHEMAS
+# ==========================================
 class AddressBase(BaseModel):
     full_name: str
     mobile_number: str
@@ -80,45 +136,54 @@ class AddressOut(AddressBase):
     class Config:
         from_attributes = True
 
+# ==========================================
+# ORDER SCHEMAS
+# ==========================================
 class OrderCreate(BaseModel):
     address_id: int
     payment_method: str
-
-class OrderOut(BaseModel):
-    order_id: str
-    total_amount: float
-    payment_method: str
-    order_status: str
-    created_at: datetime
-    class Config:
-        from_attributes = True
 
 class OrderStatusHistoryOut(BaseModel):
     status: str
     updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
-# Update the existing OrderOut schema (if you have one) or add this:
 class OrderItemOut(BaseModel):
     id: int
     product_id: int
     quantity: int
     price: float
-    # We will fetch product details dynamically in the route
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class OrderOut(BaseModel):
     order_id: str
     total_amount: float
     payment_method: str
     order_status: str
+    delivery_partner: Optional[str] = None
     created_at: datetime
     items: List[OrderItemOut] = []
     status_history: List[OrderStatusHistoryOut] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+class OrderUpdateAdmin(BaseModel):
+    order_status: Optional[str] = None
+    delivery_partner: Optional[str] = None
+
+# ==========================================
+# DASHBOARD SCHEMAS (NEW FOR ADMIN)
+# ==========================================
+class DashboardSummary(BaseModel):
+    total_customers: int
+    total_categories: int
+    total_products: int
+    total_orders: int
+    pending_orders: int
+    delivered_orders: int
+    total_revenue: float

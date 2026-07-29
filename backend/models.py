@@ -13,6 +13,7 @@ class Customer(Base):
     email = Column(String(100), nullable=True)
     village = Column(String(100))
     password_hash = Column(String(255))
+    status = Column(String(20), default="Active") # Added for Admin enable/disable customer
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
 class Category(Base):
@@ -34,7 +35,7 @@ class Product(Base):
     product_name = Column(String(100), nullable=False, index=True)
     description = Column(Text, nullable=True)
     product_image = Column(String(255), nullable=True)
-    images = Column(JSON, nullable=True) # New field for multiple images
+    images = Column(JSON, nullable=True) # Field for multiple images
     price = Column(Float, nullable=False)
     stock = Column(Integer, default=0, nullable=False)
     unit = Column(String(20), nullable=False) # Kg / Litre / Piece
@@ -60,7 +61,7 @@ class CustomerAddress(Base):
     __tablename__ = "customer_addresses"
     
     id = Column(Integer, primary_key=True, index=True)
-    customer_id = Column(Integer, ForeignKey("customers.id")) # 🔥 Confirmed fix: points to customers.id
+    customer_id = Column(Integer, ForeignKey("customers.id")) 
     full_name = Column(String(100))
     mobile_number = Column(String(15))
     address = Column(String(255)) # Door no / Street
@@ -75,10 +76,11 @@ class Order(Base):
     __tablename__ = "orders"
     
     order_id = Column(String(50), primary_key=True, index=True)
-    customer_id = Column(Integer, ForeignKey("customers.id")) # 🔥 Confirmed fix: points to customers.id
+    customer_id = Column(Integer, ForeignKey("customers.id")) 
     total_amount = Column(Float)
     payment_method = Column(String(50))
     order_status = Column(String(50), default="Pending") # Pending, Confirmed, Preparing, Out for Delivery, Delivered, Cancelled
+    delivery_partner = Column(String(100), nullable=True) # Added for Admin Delivery Assignment
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     
     items = relationship("OrderItem", backref="order")

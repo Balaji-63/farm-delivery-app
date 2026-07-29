@@ -5,7 +5,7 @@ import models, schemas, auth
 from database import engine, get_db
 from auth import oauth2_scheme
 import jwt
-from routers import storefront, cart, checkout, orders
+from routers import storefront, cart, checkout, orders, admin # 🔥 Added admin router import
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -19,11 +19,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 🔥 FIXED: Registering the checkout router here so FastAPI knows it exists
+# 🔥 Registering all application routers
 app.include_router(storefront.router)
 app.include_router(cart.router)
 app.include_router(checkout.router)
 app.include_router(orders.router)
+app.include_router(admin.router) # 🔥 NEW: Registered the Admin router
 
 # --- REGISTRATION ---
 @app.post("/api/register", response_model=schemas.CustomerOut)

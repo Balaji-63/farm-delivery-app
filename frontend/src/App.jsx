@@ -15,9 +15,17 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
 
-// 🔥 NEW: Day 5 Order Management Components
+// Day 5 Order Management Components
 import MyOrders from './pages/MyOrders';
 import OrderDetailsPage from './pages/OrderDetailsPage';
+
+// Day 6 Admin Components
+import AdminLayout from './layouts/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminCategories from './pages/admin/AdminCategories';
+import AdminProducts from './pages/admin/AdminProducts';
+import AdminOrders from './pages/admin/AdminOrders';
+import AdminCustomers from './pages/admin/AdminCustomers'; 
 
 // 1. Keeps logged-out users OUT of the private pages
 const ProtectedRoute = ({ children }) => {
@@ -37,7 +45,6 @@ const PublicRoute = ({ children }) => {
 function App() {
   return (
     <Router>
-      {/* 🔥 RESTORED: Back to the standard full-screen web view! */}
       <div className="w-full min-h-screen bg-gray-50 overflow-hidden relative">
         <Routes>
           {/* Default entry point now redirects to the main storefront */}
@@ -101,7 +108,7 @@ function App() {
           } />
 
           {/* ==========================================
-              🔥 NEW DAY 5: ORDER MANAGEMENT ROUTES
+              DAY 5: ORDER MANAGEMENT ROUTES
              ========================================== */}
           <Route path="/my-orders" element={
             <ProtectedRoute>
@@ -123,6 +130,22 @@ function App() {
               <Dashboard />
             </ProtectedRoute>
           } />
+
+          {/* ==========================================
+              DAY 6: ADMIN DASHBOARD ROUTES
+             ========================================== */}
+          <Route path="/admin" element={<AdminLayout />}>
+            {/* The index route for /admin redirects to dashboard */}
+            <Route index element={<Navigate to="dashboard" replace />} />
+            
+            {/* Core Admin Pages */}
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="categories" element={<AdminCategories />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="orders" element={<AdminOrders />} />
+            <Route path="customers" element={<AdminCustomers />} />
+          </Route>
+
         </Routes>
       </div>
     </Router>
