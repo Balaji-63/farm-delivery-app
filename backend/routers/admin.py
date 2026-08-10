@@ -156,3 +156,53 @@ def update_customer_status(customer_id: int, status_update: dict, db: Session = 
         db.refresh(db_customer)
         
     return db_customer
+
+# ==========================================
+# DELIVERY PARTNER MANAGEMENT
+# ==========================================
+
+@router.get("/delivery-partners", response_model=List[schemas.DeliveryPartnerOut])
+def get_delivery_partners(db: Session = Depends(get_db)):
+    return db.query(models.DeliveryPartner).order_by(models.DeliveryPartner.id.desc()).all()
+
+@router.post("/delivery-partners", response_model=schemas.DeliveryPartnerOut)
+def add_delivery_partner(partner: schemas.DeliveryPartnerCreate, db: Session = Depends(get_db)):
+    new_partner = models.DeliveryPartner(**partner.dict())
+    db.add(new_partner)
+    db.commit()
+    db.refresh(new_partner)
+    return new_partner
+
+@router.put("/delivery-partners/{partner_id}/status")
+def update_partner_status(partner_id: int, status_update: dict, db: Session = Depends(get_db)):
+    db_partner = db.query(models.DeliveryPartner).filter(models.DeliveryPartner.id == partner_id).first()
+    if not db_partner:
+        raise HTTPException(status_code=404, detail="Partner not found")
+    
+    if "status" in status_update:
+        db_partner.status = status_update["status"]
+        db.commit()
+        db.refresh(db_partner)
+        
+    return db_partner
+
+@router.post("/delivery-assignments")
+def assign_order(assignment: schemas.DeliveryAssignmentCreate, db: Session = Depends(get_db)):
+    db_order = db.query(models.Order).filter(models.Order.order_id == assignment.order_id).first()
+    if not db_order:
+        raise HTTPException(status_code=404, detail="Order not found")
+
+    new_assignment = models.DeliveryAssignment(**assignment.dict())
+    db.add(new_assignment)
+
+    # Update main order status to Assigned
+    db_order.order_status = "Assigned"
+    
+    # Update the legacy string field on the Order table for backward compatibility
+    db_partner = db.query(models.DeliveryPartner).filter(models.DeliveryPartner.id == assignment.delivery_partner_id).first()
+    if db_partner:
+        db_order.delivery_partner = db_partner.name
+
+    db.commit()
+    db.refresh(new_assignment)
+    return new_assignment

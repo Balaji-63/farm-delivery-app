@@ -27,6 +27,12 @@ import AdminProducts from './pages/admin/AdminProducts';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminCustomers from './pages/admin/AdminCustomers'; 
 
+// Day 7 Delivery Components
+import AdminDelivery from './pages/admin/AdminDelivery';
+import DeliveryLayout from './layouts/DeliveryLayout'; 
+import DeliveryDashboard from './pages/delivery/DeliveryDashboard'; 
+import DeliveryOrders from './pages/delivery/DeliveryOrders'; // 🔥 NEW: Imported Delivery Orders
+
 // 1. Keeps logged-out users OUT of the private pages
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('token');
@@ -132,7 +138,7 @@ function App() {
           } />
 
           {/* ==========================================
-              DAY 6: ADMIN DASHBOARD ROUTES
+              DAY 6 & 7: ADMIN DASHBOARD ROUTES
              ========================================== */}
           <Route path="/admin" element={<AdminLayout />}>
             {/* The index route for /admin redirects to dashboard */}
@@ -144,6 +150,21 @@ function App() {
             <Route path="products" element={<AdminProducts />} />
             <Route path="orders" element={<AdminOrders />} />
             <Route path="customers" element={<AdminCustomers />} />
+            
+            <Route path="delivery" element={<AdminDelivery />} />
+          </Route>
+
+          {/* ==========================================
+              DAY 7: DELIVERY PARTNER ROUTES
+             ========================================== */}
+          <Route path="/delivery" element={<DeliveryLayout />}>
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard" element={<DeliveryDashboard />} />
+            
+            {/* 🔥 NEW: Delivery Orders Route */}
+            <Route path="orders" element={<DeliveryOrders />} /> 
+            
+            {/* Future routes for history and profile will go here */}
           </Route>
 
         </Routes>

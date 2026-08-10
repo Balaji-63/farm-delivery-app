@@ -104,3 +104,28 @@ class OrderStatusHistory(Base):
     
     # Relationship back to order
     order = relationship("Order", backref="status_history")
+
+class DeliveryPartner(Base):
+    __tablename__ = "delivery_partners"
+
+    id = Column(Integer, primary_key=True, index=True)
+    partner_id = Column(String(50), unique=True, index=True)
+    name = Column(String(100))
+    mobile_number = Column(String(15), unique=True, index=True)
+    email = Column(String(100), nullable=True)
+    status = Column(String(20), default="Active") # Active / Inactive
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+class DeliveryAssignment(Base):
+    __tablename__ = "delivery_assignments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    order_id = Column(String(50), ForeignKey("orders.order_id"))
+    delivery_partner_id = Column(Integer, ForeignKey("delivery_partners.id"))
+    delivery_status = Column(String(50), default="Assigned") # Assigned, Accepted, Picked Up, Out for Delivery, Delivered
+    assigned_at = Column(DateTime, default=datetime.datetime.utcnow)
+    delivered_at = Column(DateTime, nullable=True)
+
+    # Relationships
+    order = relationship("Order", backref="delivery_assignment")
+    partner = relationship("DeliveryPartner", backref="assignments")

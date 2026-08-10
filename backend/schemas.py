@@ -187,3 +187,26 @@ class DashboardSummary(BaseModel):
     pending_orders: int
     delivered_orders: int
     total_revenue: float
+
+class DeliveryPartnerBase(BaseModel):
+    name: str
+    mobile_number: str
+    email: Optional[str] = None
+    status: Optional[str] = "Active"
+
+class DeliveryPartnerCreate(DeliveryPartnerBase):
+    partner_id: str
+
+class DeliveryPartnerOut(DeliveryPartnerBase):
+    id: int
+    partner_id: str
+
+    class Config:
+        orm_mode = True
+
+class DeliveryAssignmentCreate(BaseModel):
+    order_id: str
+    delivery_partner_id: int
+
+class DeliveryStatusUpdate(BaseModel):
+    delivery_status: str

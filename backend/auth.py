@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordBearer
 
 SECRET_KEY = "your_super_secret_key_change_this"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 7 days
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
