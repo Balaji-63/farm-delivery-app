@@ -210,3 +210,15 @@ class DeliveryAssignmentCreate(BaseModel):
 
 class DeliveryStatusUpdate(BaseModel):
     delivery_status: str
+
+import datetime
+
+class OrderTrackingOut(BaseModel):
+    id: int
+    order_id: str
+    status: str
+    updated_by: str
+    updated_at: datetime.datetime
+
+    class Config:
+        orm_mode = True

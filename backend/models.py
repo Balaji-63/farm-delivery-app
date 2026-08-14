@@ -129,3 +129,21 @@ class DeliveryAssignment(Base):
     # Relationships
     order = relationship("Order", backref="delivery_assignment")
     partner = relationship("DeliveryPartner", backref="assignments")
+
+class OrderTracking(Base):
+    __tablename__ = "order_tracking"
+
+    id = Column(Integer, primary_key=True, index=True)
+    order_id = Column(String(50), ForeignKey("orders.order_id"))
+    status = Column(String(50))
+    updated_by = Column(String(100), default="System") # e.g., 'Admin', 'Customer', or Driver Name
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+class DeliveryHistory(Base):
+    __tablename__ = "delivery_history"
+
+    id = Column(Integer, primary_key=True, index=True)
+    order_id = Column(String(50), ForeignKey("orders.order_id"))
+    delivery_partner_id = Column(Integer, ForeignKey("delivery_partners.id"))
+    delivery_status = Column(String(50))
+    delivered_at = Column(DateTime, default=datetime.datetime.utcnow)

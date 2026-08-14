@@ -5,8 +5,8 @@ import models, schemas, auth
 from database import engine, get_db
 from auth import oauth2_scheme
 import jwt
-# 🔥 Added delivery router import here
-from routers import storefront, cart, checkout, orders, admin, delivery 
+# 🔥 Added tracking router import here
+from routers import storefront, cart, checkout, orders, admin, delivery, tracking 
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -26,7 +26,8 @@ app.include_router(cart.router)
 app.include_router(checkout.router)
 app.include_router(orders.router)
 app.include_router(admin.router) 
-app.include_router(delivery.router) # 🔥 NEW: Registered the Delivery router
+app.include_router(delivery.router) 
+app.include_router(tracking.router) # 🔥 NEW: Registered the Tracking router
 
 # --- REGISTRATION ---
 @app.post("/api/register", response_model=schemas.CustomerOut)

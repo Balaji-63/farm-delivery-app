@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 import datetime
 import models
 from database import get_db
+from routers.tracking import log_order_status
 
 router = APIRouter(
     prefix="/api/delivery",
@@ -63,13 +64,28 @@ def update_delivery_status(assignment_id: int, status_data: dict, db: Session = 
     new_status = status_data.get("delivery_status")
     assignment.delivery_status = new_status
 
+    # Get the driver's name for the log
+    driver = db.query(models.DeliveryPartner).filter(models.DeliveryPartner.id == assignment.delivery_partner_id).first()
+    driver_name = driver.name if driver else "Delivery Partner"
+
     if new_status == "Delivered":
         assignment.delivered_at = datetime.datetime.utcnow()
+        # Log it in the official delivery_history table requested in Day 8
+        history_log = models.DeliveryHistory(
+            order_id=assignment.order_id,
+            delivery_partner_id=assignment.delivery_partner_id,
+            delivery_status=new_status,
+            delivered_at=datetime.datetime.utcnow()
+        )
+        db.add(history_log)
 
-    # Keep the main order table completely synced
+    # Sync with main order table
     order = db.query(models.Order).filter(models.Order.order_id == assignment.order_id).first()
     if order:
         order.order_status = new_status
+
+    # 🔥 Write the timeline log!
+    log_order_status(db, assignment.order_id, new_status, updated_by=driver_name)
 
     db.commit()
     return {"message": f"Status successfully updated to {new_status}"}

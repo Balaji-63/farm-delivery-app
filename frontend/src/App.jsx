@@ -15,9 +15,10 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
 
-// Day 5 Order Management Components
+// Day 5 & 8 Order Management Components
 import MyOrders from './pages/MyOrders';
 import OrderDetailsPage from './pages/OrderDetailsPage';
+import OrderHistory from './pages/OrderHistory'; // 🔥 NEW: Imported Order History
 
 // Day 6 Admin Components
 import AdminLayout from './layouts/AdminLayout';
@@ -31,7 +32,7 @@ import AdminCustomers from './pages/admin/AdminCustomers';
 import AdminDelivery from './pages/admin/AdminDelivery';
 import DeliveryLayout from './layouts/DeliveryLayout'; 
 import DeliveryDashboard from './pages/delivery/DeliveryDashboard'; 
-import DeliveryOrders from './pages/delivery/DeliveryOrders'; // 🔥 NEW: Imported Delivery Orders
+import DeliveryOrders from './pages/delivery/DeliveryOrders'; 
 
 // 1. Keeps logged-out users OUT of the private pages
 const ProtectedRoute = ({ children }) => {
@@ -114,7 +115,7 @@ function App() {
           } />
 
           {/* ==========================================
-              DAY 5: ORDER MANAGEMENT ROUTES
+              DAY 5 & 8: ORDER MANAGEMENT ROUTES
              ========================================== */}
           <Route path="/my-orders" element={
             <ProtectedRoute>
@@ -125,6 +126,13 @@ function App() {
           <Route path="/my-orders/:orderId" element={
             <ProtectedRoute>
               <OrderDetailsPage />
+            </ProtectedRoute>
+          } />
+          
+          {/* 🔥 NEW: Order History Route */}
+          <Route path="/order-history" element={
+            <ProtectedRoute>
+              <OrderHistory />
             </ProtectedRoute>
           } />
 
@@ -160,10 +168,7 @@ function App() {
           <Route path="/delivery" element={<DeliveryLayout />}>
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<DeliveryDashboard />} />
-            
-            {/* 🔥 NEW: Delivery Orders Route */}
             <Route path="orders" element={<DeliveryOrders />} /> 
-            
             {/* Future routes for history and profile will go here */}
           </Route>
 
